@@ -1,3 +1,5 @@
+// Name: Boren Wang
+// SBU-ID: 111385010
 //
 //  ViewController.swift
 //  Tip Calculator App
@@ -24,7 +26,7 @@ class ViewController: UIViewController {
 
     @IBAction func btn15Clicked(_ sender: Any) {
         if let total = Double(billAmount.text!) {
-            let totalStr = String(format: "%.2f", total)
+            let totalStr = String(format: "%.2f", total+total*0.15)
             let tipStr = String(format: "%.2f", total*0.15)
             label.text = "Tip amount: $\(tipStr) Total: $\(totalStr)"
         }
@@ -32,7 +34,7 @@ class ViewController: UIViewController {
     
     @IBAction func btn18Clicked(_ sender: Any) {
         if let total = Double(billAmount.text!) {
-            let totalStr = String(format: "%.2f", total)
+            let totalStr = String(format: "%.2f", total+total*0.18)
             let tipStr = String(format: "%.2f", total*0.18)
             label.text = "Tip amount: $\(tipStr) Total: $\(totalStr)"
         }
@@ -40,7 +42,7 @@ class ViewController: UIViewController {
     
     @IBAction func btn20Clicked(_ sender: Any) {
         if let total = Double(billAmount.text!) {
-            let totalStr = String(format: "%.2f", total)
+            let totalStr = String(format: "%.2f", total+total*0.20)
             let tipStr = String(format: "%.2f", total*0.20)
             label.text = "Tip amount: $\(tipStr) Total: $\(totalStr)"
         }

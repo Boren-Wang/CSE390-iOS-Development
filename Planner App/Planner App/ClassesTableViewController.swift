@@ -1,3 +1,5 @@
+// Name: Boren Wang
+// SBU-ID: 111385010
 //
 //  ClassesTableViewController.swift
 //  Planner App
@@ -6,6 +8,7 @@
 //  Copyright © 2020 Boren Wang. All rights reserved.
 //
 
+// I got the idea from the textbook
 import UIKit
 import CoreData
 
@@ -25,6 +28,7 @@ class ClassesTableViewController: UITableViewController {
     }
 
     func loadDataFromDatabase() {
+        classes = []
         //Set up Core Data Context
         let context = appDelegate.persistentContainer.viewContext
         //Set up Request
@@ -114,12 +118,14 @@ class ClassesTableViewController: UITableViewController {
     }
     */
 
+    /*
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
     }
+    */
     
     // MARK: - Helper Functions
     func getColor(_ className: String) -> UIColor {
@@ -128,7 +134,7 @@ class ClassesTableViewController: UITableViewController {
         let tasksForClass = getTasksForClass(className)
         for task in tasksForClass {
             if task.dueDate != nil {
-                if getDaysBetweenDates(firstDate: date, secondDate: task.dueDate!) < 1 {
+                if getDaysBetweenDates(firstDate: date, secondDate: task.dueDate!) == 0 {
                     color = UIColor.red
                 } else if getDaysBetweenDates(firstDate: date, secondDate: task.dueDate!) == 1 && color != UIColor.red {
                     color = UIColor.blue

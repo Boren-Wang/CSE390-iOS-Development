@@ -1,3 +1,5 @@
+// Name: Boren Wang
+// SBU-ID: 111385010
 //
 //  TaskViewController.swift
 //  Planner App
@@ -6,6 +8,7 @@
 //  Copyright © 2020 Boren Wang. All rights reserved.
 //
 
+// I got the idea from the textbook
 import UIKit
 import CoreData
 
@@ -29,7 +32,7 @@ class TaskViewController: UIViewController, UITextFieldDelegate, DateControllerD
             txtClassName.text = currentTask!.category
 
             let formatter = DateFormatter()
-            formatter.dateStyle = .short
+            formatter.dateFormat = "MM/dd/YYYY"
             if currentTask!.dueDate != nil {
                 lblDueDate.text = formatter.string(from: currentTask!.dueDate!)
             }
@@ -59,7 +62,7 @@ class TaskViewController: UIViewController, UITextFieldDelegate, DateControllerD
                 textField.borderStyle = UITextField.BorderStyle.roundedRect
             }
             btnChange.isHidden = false
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(self.saveContact))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(self.saveTask))
         }
     }
     
@@ -70,10 +73,23 @@ class TaskViewController: UIViewController, UITextFieldDelegate, DateControllerD
         }
         currentTask?.title = txtTitle.text
         currentTask?.category = txtClassName.text
+        print("End editing")
         return true
     }
     
-    @objc func saveContact() {
+    @objc func saveTask() {
+        if currentTask == nil {
+            let context = appDelegate.persistentContainer.viewContext
+            currentTask = Task(context: context)
+        }
+        if txtTitle.text=="" {
+            currentTask?.title = "Untitled"
+            txtTitle.text = "Untitled"
+        }
+        if txtClassName.text=="" {
+            currentTask?.category = "Default"
+            txtClassName.text = "Default"
+        }
         appDelegate.saveContext()
         sgmtEditMode.selectedSegmentIndex = 0
         changeEditMode(self)

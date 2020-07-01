@@ -1,3 +1,5 @@
+// Name: Boren Wang
+// SBU-ID: 111385010
 //
 //  SettingsViewController.swift
 //  Planner App
@@ -6,6 +8,7 @@
 //  Copyright © 2020 Boren Wang. All rights reserved.
 //
 
+// I got the idea from the textbook
 import UIKit
 
 class SettingsViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {

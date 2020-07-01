@@ -1,3 +1,5 @@
+// Name: Boren Wang
+// SBU-ID: 111385010
 //
 //  TasksForClassTableViewController.swift
 //  Planner App
@@ -6,30 +8,64 @@
 //  Copyright © 2020 Boren Wang. All rights reserved.
 //
 
+// I got the idea from the textbook
 import UIKit
 import CoreData
 
 class TasksForClassTableViewController: UITableViewController {
     
     var tasks:[NSManagedObject] = []
+    var isHiding:Bool = false
     var selectedClass:String = ""
     var tasksForClass:[Task] = []
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
+    @IBOutlet weak var lblToday: UILabel!
+    @IBOutlet weak var hideTasksPastDue: UIButton!
+    @IBOutlet weak var titleClass: UINavigationItem!
+    
+    @IBAction func hideTasksPastDueClicked(_ sender: UIButton) {
+        if(isHiding) { // will unhide the tasks past due
+            loadDataFromDatabase()
+            tableView.reloadData()
+            sender.setTitle(" Hide Tasks Past Due ", for: .normal)
+            isHiding = false
+        } else { // will hide the tasks past due
+            let today:Date = Date()
+            for t in tasksForClass {
+                let index = tasksForClass.firstIndex(of: t)
+                let task = t
+                let dueDate = task.dueDate
+                if dueDate != nil {
+                    if getDaysBetweenDates(firstDate: dueDate!, secondDate: today)>0 { // today-dueDate > 0
+                        tasksForClass.remove(at: index!)
+                    }
+                }
+            }
+            tableView.reloadData()
+            sender.setTitle(" Show Tasks Past Due ", for: .normal)
+            isHiding = true
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.navigationItem.rightBarButtonItem = self.editButtonItem
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd"
+        let today_date = dateFormatter.string(for: Date())
+        dateFormatter.dateFormat = "EEE"
+        let today_day = dateFormatter.string(for: Date())
+        lblToday.text = "\(today_day!) \(today_date!)"
+        titleClass.title = selectedClass
     }
     
     override func viewWillAppear(_ animated: Bool) {
         loadDataFromDatabase()
         tableView.reloadData()
+        isHiding = false
+        hideTasksPastDue.setTitle(" Hide Tasks Past Due ", for: .normal)
     }
 
     func loadDataFromDatabase() {
@@ -157,12 +193,22 @@ class TasksForClassTableViewController: UITableViewController {
 
     /*
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
     }
     */
+    
+    // MARK: - Helper Functions
+    func getDaysBetweenDates(firstDate: Date, secondDate: Date) -> Int {
+        let calendar = Calendar.current
 
+        // Replace the hour (time) of both dates with 00:00
+        let date1 = calendar.startOfDay(for: firstDate)
+        let date2 = calendar.startOfDay(for: secondDate)
+
+        let components = calendar.dateComponents([.day], from: date1, to: date2)
+        return components.day!
+    }
 }

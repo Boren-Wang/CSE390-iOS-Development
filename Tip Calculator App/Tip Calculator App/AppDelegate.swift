@@ -1,3 +1,5 @@
+// Name: Boren Wang
+// SBU-ID: 111385010
 //
 //  AppDelegate.swift
 //  Tip Calculator App
